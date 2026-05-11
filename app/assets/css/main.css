@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-[#0A0A0A] text-white antialiased;
+  font-family: 'Inter', sans-serif;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10;
+}
+
+/* Custom Glow for the RUNGORUN brand */
+.neon-glow {
+  text-shadow: 0 0 15px rgba(223, 255, 0, 0.4);
+}
