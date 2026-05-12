@@ -79,7 +79,7 @@ const shareWebsite = async () => {
             Support <span class="text-rungreen">& Feedback.</span>
           </h2>
           <p class="text-gray-500 font-bold italic mb-10 text-sm md:text-base leading-tight uppercase tracking-widest">
-            Direct circuit to the RUN GO RUN team.
+            Direct circuit to the RUNGORUN team.
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
             <div class="p-6 rounded-[30px] bg-white/5 border border-white/10">
@@ -95,20 +95,20 @@ const shareWebsite = async () => {
           </div>
           <div class="space-y-4">
             <a 
-              href="https://wa.me/yournumber" 
+              href="https://wa.me/233270751657" 
               target="_blank" 
               class="btn-global flex items-center gap-4 px-6 py-5 rounded-[25px] bg-rungreen text-black hover:scale-[1.02] transition-all duration-500"
             >
               <Icon name="ph:whatsapp-logo-bold" class="text-4xl" />
               <div class="flex-1 text-left">
-                <p class="text-[10px] uppercase font-black leading-none opacity-70 mb-1">Instant Support Circuit</p>
-                <p class="font-black text-xl md:text-2xl leading-tight uppercase italic">Contact through WhatsApp</p>
+                <!-- <p class="text-[10px] uppercase font-black leading-none opacity-70 mb-1">Instant Support Circuit</p> -->
+                <p class="font-black text-xl md:text-2xl leading-tight uppercase italic">Contact us</p>
               </div>
               <Icon name="ph:arrow-right-bold" class="text-2xl" />
             </a>
             <div class="flex items-center justify-center gap-3 py-4 border-t border-white/5 mt-4">
               <Icon name="ph:map-pin-fill" class="text-gray-600 text-sm" />
-              <p class="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Run Go Run | Accra Ghana</p>
+              <p class="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">RunGoRun | Accra Ghana</p>
             </div>
           </div>
         </div>
