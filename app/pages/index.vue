@@ -1,11 +1,12 @@
 <script setup>
 import { useWhatsApp } from '~/composables/useWhatsApp'
 
-// Global State for the Modal
-const showContact = useState('contact_modal', () => false)
 const { orderOnWhatsApp } = useWhatsApp()
-
 const visibleSections = ref(new Set())
+
+// Global state for the modal is now managed in the layout, 
+// but we reference it here to trigger the "Open Link" button.
+const showContact = useState('contact_modal')
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
@@ -48,21 +49,6 @@ const trustItems2 = [
 const scrollToSection = (id) => {
   const el = document.querySelector(id)
   if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
-
-const shareWebsite = async () => {
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: 'RUN GO RUN',
-        text: 'Optimize your momentum.',
-        url: window.location.href,
-      })
-    } catch (err) { console.log('Share failed') }
-  } else {
-    await navigator.clipboard.writeText(window.location.href)
-    alert('Link Copied to Clipboard')
-  }
 }
 </script>
 
@@ -220,57 +206,11 @@ const shareWebsite = async () => {
         </span>
       </div>
     </div>
-
-    <!-- ── FOOTER (With Copyright) ── -->
-    <div class="container mx-auto px-5 sm:px-6 max-w-6xl">
-      <footer class="pt-24 md:pt-40 pb-16 border-t border-white/10 text-left">
-        <div class="grid md:grid-cols-12 gap-12 mb-20 md:mb-32">
-          <div class="md:col-span-6 space-y-8 md:space-y-12">
-            <div>
-              <div class="text-[10px] font-black text-rungreen tracking-[0.6em] uppercase mb-4 opacity-60">Origin_Protocol</div>
-              <div class="text-5xl md:text-7xl font-black italic tracking-tighter uppercase font-['Poppins'] text-white leading-none">RUN<span class="text-rungreen">GO</span>RUN</div>
-            </div>
-            <p class="text-gray-400 font-bold italic text-lg md:text-2xl leading-[1.1] max-w-xl">
-              Movement is a clinical science. Our systems are engineered at the intersection of physical limits and botanical strategy.
-            </p>
-          </div>
-          <div class="md:col-span-3 space-y-8 md:space-y-10">
-            <h5 class="text-rungreen font-black uppercase text-[10px] tracking-[0.5em] italic border-b border-white/5 pb-4">Internal_Links</h5>
-            <ul class="space-y-4 md:space-y-6">
-              <li v-for="l in [{n:'The Collection', id:'#categories'}, {n:'Protocol', id:'#science'}]" :key="l.n" @click="scrollToSection(l.id)" class="group cursor-pointer flex items-center gap-3">
-                <div class="h-1 w-0 bg-rungreen group-hover:w-4 transition-all"></div>
-                <span class="text-xs font-black uppercase tracking-widest text-gray-500 group-hover:text-white">{{l.n}}</span>
-              </li>
-            </ul>
-          </div>
-          <div class="md:col-span-3 space-y-8 md:space-y-10">
-            <h5 class="text-rungreen font-black uppercase text-[10px] tracking-[0.5em] italic border-b border-white/5 pb-4">Concierge</h5>
-            <button @click="showContact = true" class="group flex flex-col items-start gap-2 text-left">
-              <span class="text-xs font-black uppercase tracking-widest text-gray-500 group-hover:text-rungreen">Support Terminal</span>
-              <span class="text-xl md:text-2xl font-black italic uppercase text-white font-['Poppins']">Open Link</span>
-            </button>
-          </div>
-        </div>
-        <!-- COPYRIGHT LINE -->
-        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 opacity-40">
-          <p class="text-[10px] font-black uppercase tracking-widest">© Copyright 2026 Run Go Run. All Rights Reserved.</p>
-          <p class="text-[10px] font-black uppercase tracking-widest">Accra, Ghana</p>
-        </div>
-      </footer>
-    </div>
-
-    <!-- ── BROADCAST BUTTON ── -->
-    <button @click="shareWebsite" class="fixed bottom-8 right-8 z-[100] w-14 h-14 md:w-16 md:h-16 rounded-full glass border border-rungreen/30 flex items-center justify-center group hover:scale-110 active:scale-95 transition-all duration-500">
-      <div class="absolute inset-0 rounded-full bg-rungreen/10 animate-ping"></div>
-      <Icon name="ph:broadcast-bold" class="text-2xl md:text-3xl text-rungreen" />
-    </button>
   </div>
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,900&family=Urbanist:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700;1,900&display=swap');
-
-.glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); }
+/* Global Styles remain here for the page-specific animations */
 .glass-card-deep { background: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%); backdrop-filter: blur(80px); }
 .text-shadow-glow { text-shadow: 0 0 60px rgba(223, 255, 0, 0.45); }
 
@@ -314,6 +254,4 @@ const shareWebsite = async () => {
   100% { box-shadow: 0 0 0 0 rgba(223, 255, 0, 0); } 
 }
 .btn-global { animation: pulse-global 2s infinite; }
-
-html { scroll-behavior: smooth; background: #000; }
 </style>
