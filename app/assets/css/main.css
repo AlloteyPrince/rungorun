@@ -8,7 +8,9 @@ body {
 }
 
 .glass {
-  @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  background: rgba(8, 8, 8, 0.75);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Custom Glow for the RUNGORUN brand */

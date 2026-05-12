@@ -58,17 +58,6 @@ const scrollToSection = (id) => {
   <div class="bg-runblack text-white selection:bg-rungreen selection:text-black min-h-screen font-['Urbanist',_sans-serif]">
     
     <!-- NAVIGATION BREADCRUMB -->
-    <nav class="fixed top-0 left-0 w-full z-[80] bg-runblack/80 backdrop-blur-xl border-b border-white/5">
-      <div class="container mx-auto px-5 sm:px-6 max-w-7xl h-20 flex items-center justify-between">
-        <NuxtLink to="/" class="group flex items-center gap-3">
-          <Icon name="ph:arrow-left-bold" class="text-rungreen group-hover:-translate-x-1 transition-transform" />
-          <span class="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100 transition-opacity">Return to Hub</span>
-        </NuxtLink>
-        <div class="text-xl font-black italic tracking-tighter uppercase font-['Poppins'] text-white">
-          RUN<span class="text-rungreen">GO</span>RUN
-        </div>
-      </div>
-    </nav>
 
     <main class="pt-32 pb-20">
       <div class="container mx-auto px-5 sm:px-6 max-w-7xl">
@@ -168,21 +157,6 @@ const scrollToSection = (id) => {
         </div>
       </div>
     </main>
-
-    <!-- FOOTER -->
-    <div class="container mx-auto px-5 sm:px-6 max-w-7xl pt-20">
-      <footer class="pb-16 border-t border-white/10 text-left">
-        <div class="pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-           <div class="text-3xl font-black italic tracking-tighter uppercase font-['Poppins'] text-white">
-            RUN<span class="text-rungreen">GO</span>RUN
-          </div>
-          <div class="flex flex-col items-center md:items-end gap-2 opacity-40">
-            <p class="text-[10px] font-black uppercase tracking-widest">© Copyright 2026 Run Go Run. All Rights Reserved.</p>
-            <p class="text-[10px] font-black uppercase tracking-widest">Accra, Ghana</p>
-          </div>
-        </div>
-      </footer>
-    </div>
   </div>
 </template>
 

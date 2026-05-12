@@ -4,8 +4,7 @@ import { useWhatsApp } from '~/composables/useWhatsApp'
 const { orderOnWhatsApp } = useWhatsApp()
 const visibleSections = ref(new Set())
 
-// Global state for the modal is now managed in the layout, 
-// but we reference it here to trigger the "Open Link" button.
+// Global state for the modal is now managed in the layout
 const showContact = useState('contact_modal')
 
 onMounted(() => {
@@ -115,11 +114,16 @@ const scrollToSection = (id) => {
 
       <!-- ── CATEGORIES SECTION ── -->
       <section id="categories" class="py-24 sm:py-44 scroll-mt-48">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-20 text-left">
+        <!-- FIXED ALIGNMENT: items-center ensures both sides share the same baseline -->
+        <div class="flex flex-row justify-between items-center gap-8 mb-20 text-left">
           <div class="space-y-4">
               <h3 class="text-rungreen font-black tracking-[0.4em] uppercase text-[11px]">The Collection</h3>
-              <h2 class="text-[clamp(2.2rem,6vw,4rem)] font-black italic uppercase tracking-tighter font-['Poppins']">Shop By <span class="text-white/30">System.</span></h2>
+              <h2 class="text-[clamp(2.2rem,6vw,4rem)] font-black italic uppercase tracking-tighter font-['Poppins'] leading-none">Shop By <span class="text-white/30">System.</span></h2>
           </div>
+          <NuxtLink to="/categories" class="group flex items-center gap-4 px-6 py-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-rungreen hover:text-black transition-all duration-500 whitespace-nowrap">
+            <span class="font-black uppercase italic text-[10px] md:text-[11px] tracking-widest">View All Categories</span>
+            <Icon name="ph:caret-double-right-bold" class="text-lg group-hover:translate-x-2 transition-transform" />
+          </NuxtLink>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div v-for="(cat, i) in categories" :key="i" 
@@ -210,7 +214,6 @@ const scrollToSection = (id) => {
 </template>
 
 <style>
-/* Global Styles remain here for the page-specific animations */
 .glass-card-deep { background: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%); backdrop-filter: blur(80px); }
 .text-shadow-glow { text-shadow: 0 0 60px rgba(223, 255, 0, 0.45); }
 
