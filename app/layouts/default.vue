@@ -79,7 +79,7 @@ const shareWebsite = async () => {
             Support <span class="text-rungreen">& Feedback.</span>
           </h2>
           <p class="text-gray-500 font-bold italic mb-10 text-sm md:text-base leading-tight uppercase tracking-widest">
-            Direct circuit to the RUNGORUN team.
+            Directly to the RUNGORUN team.
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
             <div class="p-6 rounded-[30px] bg-white/5 border border-white/10">
