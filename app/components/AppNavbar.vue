@@ -60,7 +60,7 @@ const handleNavClick = async (path) => {
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/5">
           <div class="w-2 h-2 bg-rungreen rounded-full animate-pulse shadow-[0_0_10px_#dfff00]"></div>
-          <span class="text-[10px] font-black tracking-[0.2em] text-rungreen uppercase italic">Accra Live</span>
+          <span class="text-[10px] font-black tracking-[0.2em] text-rungreen uppercase italic">Live</span>
         </div>
         <button 
           @click="toggleMenu" 
