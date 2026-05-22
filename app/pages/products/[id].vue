@@ -35,13 +35,12 @@ const updateQuantity = (val) => {
 }
 
 const handleOrder = () => {
-  const message = `Order Request: 
-Item: ${product.name}
-Quantity: ${quantity.value}
-Size: ${selectedSize.value}
-Category: ${product.category}`
-  
-  orderOnWhatsApp(message)
+  orderOnWhatsApp(
+    product.name,
+    product.price,
+    quantity.value,
+    selectedSize.value
+  )
 }
 
 useHead({

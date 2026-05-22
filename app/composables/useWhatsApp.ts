@@ -1,8 +1,27 @@
+// composables/useWhatsApp.ts
 export const useWhatsApp = () => {
-  const orderOnWhatsApp = (productName, price) => {
-    const phone = "233XXXXXXXXX"; // Your actual number
-    const text = `Hello Prince! 🔥 I want to order the *${productName}* (${price}).`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+  const appConfig = useAppConfig()
+
+  const orderOnWhatsApp = (
+    productName: string,
+    price: string,
+    quantity: number = 1,
+    size: string = 'M'
+  ) => {
+    const phone = appConfig.brand.whatsappNumber
+    const text = `${appConfig.brand.whatsappMessage}
+
+Brand: ${appConfig.brand.name}
+Item: ${productName}
+Price: GHS ${price}
+Quantity: ${quantity}
+Size: ${size}`
+
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+    window.open(url, '_blank')
   }
-  return { orderOnWhatsApp }
+
+  return {
+    orderOnWhatsApp,
+  }
 }
