@@ -7,11 +7,11 @@ export const useWhatsApp = () => {
     price: string,
     quantity: number = 1,
     size: string = "M",
+    productId: string = "",
   ) => {
     const phone = appConfig.brand.whatsappNumber;
     const total = (parseFloat(price) * quantity).toFixed(2);
-    const productSlug = productName.toLowerCase().replace(/\s+/g, "-");
-    const productUrl = `https://rungorun.netlify.app/products/${productSlug}`;
+    const productUrl = `https://rungorun.netlify.app/products/${productId}`;
 
     const text = `🛒 *NEW ORDER — ${appConfig.brand.name.toUpperCase()}*
 ━━━━━━━━━━━━━━━
