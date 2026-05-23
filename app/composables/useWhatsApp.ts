@@ -9,13 +9,21 @@ export const useWhatsApp = () => {
     size: string = 'M'
   ) => {
     const phone = appConfig.brand.whatsappNumber
-    const text = `${appConfig.brand.whatsappMessage}
+    const total = (parseFloat(price) * quantity).toFixed(2)
+    const productSlug = productName.toLowerCase().replace(/\s+/g, '-')
+    const productUrl = `https://rungorun.netlify.app/shop/${productSlug}`
 
-Brand: ${appConfig.brand.name}
-Item: ${productName}
-Price: GHS ${price}
-Quantity: ${quantity}
-Size: ${size}`
+    const text = `🛒 *NEW ORDER — ${appConfig.brand.name.toUpperCase()}*
+━━━━━━━━━━━━━━━━━━━━━
+📦 *Product:* ${productName}
+📏 *Size:* ${size}
+🔢 *Quantity:* ${quantity}
+💰 *Unit Price:* GHS ${price}
+🧾 *Total:* GHS ${total}
+━━━━━━━━━━━━━━━━━━━━━
+🔗 *View Product:* ${productUrl}
+━━━━━━━━━━━━━━━━━━━━━
+${appConfig.brand.whatsappMessage}`
 
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
     window.open(url, '_blank')

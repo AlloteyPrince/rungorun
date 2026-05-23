@@ -1,18 +1,12 @@
 <script setup>
+import { products } from '~/data/products'
+
 const activeCategory = ref('All')
 const categories = ['All', 'Apparel', 'Accessories', 'Support', 'Metric Tech']
 
-// This would eventually be your JSON-driven plant/product library
-const allProducts = [
-  { id: 'v01', name: 'V.01 JOGGER', category: 'Apparel', price: '450', system: 'SYS.01' },
-  { id: 'v02', name: 'METRIC TEE', category: 'Apparel', price: '250', system: 'SYS.01' },
-  { id: 's01', name: 'RECOVERY BALM', category: 'Support', price: '180', system: 'SYS.03' },
-  // ... more products
-]
-
 const filteredProducts = computed(() => {
-  if (activeCategory.value === 'All') return allProducts
-  return allProducts.filter(p => p.category === activeCategory.value)
+  if (activeCategory.value === 'All') return products
+  return products.filter(p => p.category === activeCategory.value)
 })
 </script>
 
@@ -43,9 +37,15 @@ const filteredProducts = computed(() => {
           :to="`/products/${product.id}`"
           class="glass-card-deep p-8 rounded-[40px] border border-white/5 group hover:border-rungreen/40 transition-all"
         >
-          <!-- Product Card Content (as used in index.vue) -->
-          <div class="aspect-square bg-white/[0.02] rounded-[30px] mb-8 flex items-center justify-center">
-             <Icon name="ph:package-bold" class="text-6xl text-white/10 group-hover:text-rungreen transition-colors" />
+          <!-- Product Card Content -->
+          <div class="aspect-square bg-white/[0.02] rounded-[30px] mb-8 overflow-hidden flex items-center justify-center">
+            <img
+              v-if="product.images && product.images[0]"
+              :src="product.images[0]"
+              :alt="product.name"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <Icon v-else name="ph:package-bold" class="text-6xl text-white/10 group-hover:text-rungreen transition-colors" />
           </div>
           <h3 class="text-2xl font-black italic uppercase mb-2">{{ product.name }}</h3>
           <p class="text-rungreen font-black italic">GHS {{ product.price }}</p>

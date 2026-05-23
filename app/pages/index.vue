@@ -1,8 +1,12 @@
 <script setup>
 import { useWhatsApp } from '~/composables/useWhatsApp'
+import { products } from '~/data/products'
 
 const { orderOnWhatsApp } = useWhatsApp()
 const visibleSections = ref(new Set())
+
+// Show only first 2 products on homepage
+const featuredProducts = computed(() => products.slice(0, 2))
 
 // Global state for the modal is now managed in the layout
 const showContact = useState('contact_modal')
@@ -114,7 +118,6 @@ const scrollToSection = (id) => {
 
       <!-- ── CATEGORIES SECTION ── -->
       <section id="categories" class="py-24 sm:py-44 scroll-mt-48">
-        <!-- FIXED ALIGNMENT: items-center ensures both sides share the same baseline -->
         <div class="flex flex-row justify-between items-center gap-8 mb-20 text-left">
           <div class="space-y-4">
               <h3 class="text-rungreen font-black tracking-[0.4em] uppercase text-[11px]">The Collection</h3>
@@ -150,15 +153,26 @@ const scrollToSection = (id) => {
           <h2 class="text-[clamp(2.2rem,6vw,4rem)] font-black italic uppercase tracking-tighter font-['Poppins']">Ready for <span class="text-white/30">Deployment.</span></h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-10 text-left mb-16">
-          <NuxtLink v-for="i in 2" :key="i" to="/products/1" class="glass-card-deep rounded-[40px] md:rounded-[60px] p-8 md:p-10 border border-white/5 group hover:border-rungreen/40 transition-all">
+          <NuxtLink
+            v-for="product in featuredProducts"
+            :key="product.id"
+            :to="`/products/${product.id}`"
+            class="glass-card-deep rounded-[40px] md:rounded-[60px] p-8 md:p-10 border border-white/5 group hover:border-rungreen/40 transition-all"
+          >
             <div class="aspect-[4/3] rounded-[30px] md:rounded-[40px] bg-white/[0.02] mb-10 overflow-hidden relative flex items-center justify-center border border-white/5">
               <div class="absolute top-6 left-6 bg-rungreen text-black text-[9px] font-black px-4 py-2 uppercase rounded-md z-10">In Circuit</div>
-              <Icon name="ph:sneaker-move-bold" class="text-white/5 text-[10rem] md:text-[15rem] group-hover:scale-110 transition-transform duration-700" />
+              <img
+                v-if="product.images && product.images[0]"
+                :src="product.images[0]"
+                :alt="product.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <Icon v-else name="ph:sneaker-move-bold" class="text-white/5 text-[10rem] md:text-[15rem] group-hover:scale-110 transition-transform duration-700" />
             </div>
             <div class="flex justify-between items-center px-2">
               <div class="space-y-1">
-                <h4 class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter group-hover:text-rungreen transition-colors font-['Poppins'] leading-none text-white">V.0{{i}} Jogger</h4>
-                <p class="text-rungreen font-black text-xl md:text-3xl tracking-tighter italic">GHS 450.00</p>
+                <h4 class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter group-hover:text-rungreen transition-colors font-['Poppins'] leading-none text-white">{{ product.name }}</h4>
+                <p class="text-rungreen font-black text-xl md:text-3xl tracking-tighter italic">GHS {{ product.price }}</p>
               </div>
               <div class="w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/10 group-hover:bg-rungreen group-hover:text-black flex items-center justify-center transition-all">
                 <Icon name="ph:arrow-right-bold" class="text-2xl" />
