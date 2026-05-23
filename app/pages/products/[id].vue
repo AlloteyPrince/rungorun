@@ -36,14 +36,14 @@ useSeoMeta({
 <template>
   <div class="bg-runblack text-white selection:bg-rungreen selection:text-black font-['Urbanist',_sans-serif]">
 
-    <main class="product-main">
-      <div class="container mx-auto px-5 sm:px-6 max-w-7xl w-full h-full flex items-center">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full h-full items-center">
+    <main class="pt-24 pb-16">
+      <div class="container mx-auto px-5 sm:px-6 max-w-7xl w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           <!-- LEFT: IMAGE GALLERY -->
-          <div class="lg:col-span-7 flex flex-col gap-3 h-full justify-center min-h-0">
+          <div class="lg:col-span-7 flex flex-col gap-3">
 
-            <!-- MAIN IMAGE -->
+            <!-- MAIN IMAGE: big square on mobile, same on desktop -->
             <div class="glass-card-deep rounded-[32px] overflow-hidden border border-white/5 flex items-center justify-center relative group main-image-card">
               <div class="absolute top-5 left-5 bg-rungreen text-black text-[10px] font-black px-3 py-1.5 uppercase rounded-md z-10 italic">
                 Live Circuit // Deployment
@@ -62,7 +62,7 @@ useSeoMeta({
             </div>
 
             <!-- THUMBNAILS -->
-            <div class="grid grid-cols-4 gap-3 flex-shrink-0">
+            <div class="grid grid-cols-4 gap-3">
               <div
                 v-for="i in 4"
                 :key="i"
@@ -89,9 +89,9 @@ useSeoMeta({
           </div>
 
           <!-- RIGHT: SPECS & ACTION -->
-          <div class="lg:col-span-5 flex flex-col gap-3 text-left justify-center h-full min-h-0 scrollbar-hide" style="overflow-y: auto;">
+          <div class="lg:col-span-5 flex flex-col gap-4 text-left">
 
-            <header class="space-y-1">
+            <header class="space-y-1.5">
               <div class="flex items-center gap-4 text-rungreen font-black italic tracking-[0.3em] text-xs uppercase">
                 <span>{{ product.system }}</span>
                 <span class="w-1.5 h-1.5 bg-rungreen rounded-full animate-pulse"></span>
@@ -150,12 +150,12 @@ useSeoMeta({
             <!-- ORDER BUTTON -->
             <button
               @click="handleOrder"
-              class="btn-global w-full bg-rungreen text-black py-4 rounded-[24px] font-black uppercase italic text-xl flex justify-center items-center gap-4 group flex-shrink-0"
+              class="btn-global w-full bg-rungreen text-black py-4 rounded-[24px] font-black uppercase italic text-xl flex justify-center items-center gap-4 group"
             >
               DEPLOY ORDER <Icon name="ph:whatsapp-logo-bold" class="text-3xl group-hover:scale-110 transition-transform" />
             </button>
 
-            <p class="text-xs font-black uppercase tracking-[0.2em] text-center opacity-40 italic flex-shrink-0">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-center opacity-40 italic">
               *All orders are processed via the secure Run Go Run WhatsApp Terminal
             </p>
           </div>
@@ -174,41 +174,17 @@ useSeoMeta({
   backdrop-filter: blur(80px);
 }
 
-.product-main {
-  height: 100dvh;
-  box-sizing: border-box;
-  padding-top: 68px;
-  padding-bottom: 16px;
-  display: flex;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .product-main {
-    padding-top: 88px;
-    padding-bottom: 20px;
-  }
-}
-
-/* Image card grows to fill space but never pushes past its parent */
+/* Mobile: big square so the product is fully visible */
 .main-image-card {
-  flex: 1;
-  min-height: 0;
-  max-height: 68vh;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
-@media (min-width: 768px) {
+/* Desktop: slightly landscape to feel more editorial */
+@media (min-width: 1024px) {
   .main-image-card {
-    max-height: 62vh;
+    aspect-ratio: 4 / 3;
   }
-}
-
-.scrollbar-hide {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
 }
 
 .btn-global {
