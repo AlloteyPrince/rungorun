@@ -22,7 +22,7 @@ const handleOrder = () => {
   orderOnWhatsApp(product.name, product.price, quantity.value, selectedSize.value)
 }
 
-useHead({ title: `${product?.name} | RUN GO RUN` })
+useHead({ title: `${product?.name} | RUNGORUN` })
 
 useSeoMeta({
   ogTitle: `${product?.name} | RUN GO RUN`,

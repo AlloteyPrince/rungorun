@@ -26,17 +26,17 @@ export interface Product {
 export const products: Product[] = [
   {
     id: "premium-armband-1",
-    name: "Premium Arm Band",
+    name: "Joggers' Arm Band",
     price: "120.00",
     category: "Accessories",
     system: "SYS.01",
     description:
-      "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.",
+      "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.Run free, stay connected. Your phone always secure and within reach!",
     images: [
-      "/images/armbandimg1.jpg", // Main image — used for WhatsApp card
-      "/images/armbandimg1b.jpg", // Thumbnail 2
-      "/images/armbandimg1c.jpg", // Thumbnail 3
-      "/images/armbandimg1d.jpg", // Thumbnail 4
+      "/images/armband1.jpg", // Main image — used for WhatsApp card
+      "/images/armband1b.jpg", // Thumbnail 2
+      "/images/armband1d.jpg", // Thumbnail 3
+      "/images/armband1e.jpg", // Thumbnail 4
     ],
     sizing: "standard",
     specs: [
@@ -47,18 +47,18 @@ export const products: Product[] = [
     ],
   },
   {
-    id: "premium-chest-band-2",
-    name: "Premium Chest Band",
+    id: "premium-running-vest-1",
+    name: "Premium Running Vest",
     price: "200.00",
     category: "Accessories",
     system: "SYS.02",
     description:
-      "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.",
+      "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.Secure Grip. No Worries. Adjustable waist buckle. Can be used in running, cycling, jogging and any active performances",
     images: [
-      "/images/armbandimg2.jpg", // Main image — used for WhatsApp card
-      "/images/armbandimg2b.jpg", // Thumbnail 2
-      "/images/armbandimg2c.jpg", // Thumbnail 3
-      "/images/armbandimg2d.jpg", // Thumbnail 4
+      "/images/runningvest1f.jpg", // Main image — used for WhatsApp card
+      "/images/runningvest1a.jpg", // Thumbnail 2
+      "/images/runningvest1b.jpg", // Thumbnail 3
+      "/images/runningvest1e.jpg", // Thumbnail 4
     ],
     sizing: "standard",
     specs: [
