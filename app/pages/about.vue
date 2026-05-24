@@ -5,17 +5,6 @@ useHead({ title: "About | RUNGORUN" });
 <template>
   <div class="min-h-screen bg-runblack pt-32 pb-20">
     <div class="container mx-auto px-5 sm:px-6 max-w-6xl">
-      <!-- BACK -->
-      <NuxtLink
-        to="/"
-        class="group flex items-center gap-2 text-gray-500 hover:text-rungreen transition-colors mb-16 uppercase font-black text-[10px] tracking-widest"
-      >
-        <Icon
-          name="heroicons:arrow-left-20-solid"
-          class="group-hover:-translate-x-1 transition-transform"
-        />
-        Back to Base
-      </NuxtLink>
 
       <!-- HERO HEADER -->
       <header class="mb-20">
