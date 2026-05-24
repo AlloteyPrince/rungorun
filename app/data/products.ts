@@ -15,7 +15,6 @@ export interface Product {
   name: string;
   price: string;
   category: string;
-  system: string;
   description: string;
   images: string[]; // images[0] = main image & WhatsApp card, images[1-3] = thumbnails
   sizing: "standard" | "sized";
@@ -29,7 +28,6 @@ export const products: Product[] = [
     name: "Jogging Arm Band",
     price: "120.00",
     category: "Accessories",
-    system: "SYS.01",
     description:
       "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.Run free, stay connected. Your phone always secure and within reach!",
     images: [
@@ -51,7 +49,6 @@ export const products: Product[] = [
     name: "Premium Running Vest",
     price: "200.00",
     category: "Accessories",
-    system: "SYS.02",
     description:
       "Precision-engineered for the Accra climate. Features targeted tension zones for optimal oxygenation and moisture management.Secure Grip. No Worries. Adjustable waist buckle. Can be used in running, cycling, jogging and any active performances",
     images: [
