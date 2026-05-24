@@ -26,7 +26,7 @@ export interface Product {
 export const products: Product[] = [
   {
     id: "premium-armband-1",
-    name: "Jogger's Arm Band",
+    name: "Jogging Arm Band",
     price: "120.00",
     category: "Accessories",
     system: "SYS.01",
