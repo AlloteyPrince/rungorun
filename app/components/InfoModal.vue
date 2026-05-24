@@ -42,11 +42,14 @@ defineEmits(["close"]);
           <div class="mt-12">
             <button
               @click="
-                () =>
-                  useWhatsApp().orderOnWhatsApp(
-                    'General Inquiry',
-                    'Contact Page',
-                  )
+                () => {
+                  const phone = useAppConfig().brand.whatsappNumber;
+                  const text = `👋 Hello Run Go Run!\n━━━━━━━━━━━━\n💬 Type: General Enquiry\n🌐 Via: RunGoRun Website\n━━━━━━━━━━━━\n`;
+                  window.open(
+                    `https://wa.me/${phone}?text=${encodeURIComponent(text)}`,
+                    '_blank',
+                  );
+                }
               "
               class="group flex items-center gap-4 bg-white text-black px-8 py-4 font-black uppercase italic hover:bg-rungreen transition-all"
             >
