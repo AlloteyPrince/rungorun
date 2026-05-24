@@ -1,65 +1,169 @@
 <script setup>
-// Ensuring Nuxt recognizes this as a valid script block
+useHead({ title: "About | RUNGORUN" });
 </script>
 
 <template>
-  <NuxtLayout>
-    <div class="min-h-screen bg-runblack pt-32 pb-20 px-6">
-      <div class="container mx-auto max-w-4xl">
-        <NuxtLink to="/" class="group flex items-center gap-2 text-gray-500 hover:text-rungreen transition-colors mb-12 uppercase font-black text-[10px] tracking-widest">
-          <Icon name="heroicons:arrow-left-20-solid" class="group-hover:-translate-x-1 transition-transform" />
-          Back to Gear
-        </NuxtLink>
+  <div class="min-h-screen bg-runblack pt-32 pb-20">
+    <div class="container mx-auto px-5 sm:px-6 max-w-6xl">
+      <!-- BACK -->
+      <NuxtLink
+        to="/"
+        class="group flex items-center gap-2 text-gray-500 hover:text-rungreen transition-colors mb-16 uppercase font-black text-[10px] tracking-widest"
+      >
+        <Icon
+          name="heroicons:arrow-left-20-solid"
+          class="group-hover:-translate-x-1 transition-transform"
+        />
+        Back to Base
+      </NuxtLink>
 
-        <header class="mb-16">
-          <span class="text-rungreen font-black tracking-[0.4em] text-[10px] uppercase mb-4 block">RUNGORUN / ORIGINS</span>
-          <h1 class="text-6xl md:text-8xl font-black italic uppercase tracking-tighter leading-none text-white">
-            THE <span class="text-rungreen neon-glow">SCIENCE</span> <br/> OF THE STRIDE
-          </h1>
-        </header>
+      <!-- HERO HEADER -->
+      <header class="mb-20">
+        <span
+          class="text-rungreen font-black tracking-[0.4em] text-[10px] uppercase mb-6 block opacity-70"
+        >
+          RUNGORUN / ORIGINS
+        </span>
+        <h1
+          class="text-6xl md:text-8xl font-black italic uppercase tracking-tighter leading-none text-white mb-8"
+        >
+          WE RUN <br /><span class="text-rungreen neon-glow">ACCRA.</span>
+        </h1>
+        <p
+          class="text-gray-400 font-bold italic text-xl md:text-2xl leading-relaxed max-w-2xl border-l-4 border-rungreen pl-6"
+        >
+          This is not a clothing brand. This is a movement protocol — engineered
+          for the streets, the tracks, and the heat of Ghana.
+        </p>
+      </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
-          <div class="md:col-span-8 space-y-12 text-gray-400 text-lg leading-relaxed">
-            <section>
-              <h4 class="text-white font-black uppercase tracking-widest text-xs mb-4">01 / The Vision</h4>
-              <p>
-                RunGoRun is a high-performance project born from a simple obsession: merging 
-                <span class="text-white font-bold">clinical precision</span> with elite athletic lifestyle.
-              </p>
-            </section>
-            <section>
-              <h4 class="text-white font-black uppercase tracking-widest text-xs mb-4">02 / Clinical Standards</h4>
-              <p>
-                Rooted in <span class="text-rungreen font-bold">Clinical Herbalism</span>, we engineer for the heat and grit of the African athlete.
-              </p>
-            </section>
-            <section>
-              <h4 class="text-white font-black uppercase tracking-widest text-xs mb-4">03 / The Experience</h4>
-              <p>
-                We blend technical accuracy with aggressive streetwear aesthetics to make exercising the ultimate ritual of health.
-              </p>
-            </section>
-          </div>
+      <!-- MAIN GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+        <!-- LEFT: STORY -->
+        <div class="md:col-span-8 space-y-16">
+          <section class="space-y-4">
+            <h4
+              class="text-rungreen font-black uppercase tracking-[0.4em] text-[10px] italic"
+            >
+              Built Here. For Here.
+            </h4>
+            <p class="text-gray-300 text-lg leading-relaxed font-bold italic">
+              Run Go Run was built in Accra, for Accra. Most global brands
+              design for Berlin or Boston and ship to you as an afterthought. We
+              don't. Every product is engineered for 34-degree humidity, red
+              dust, and tarmac — tested against our own
+              <span class="text-white">Accra Active Circuit</span> standard
+              before it ever reaches you. We don't release products to fill
+              shelves. We release them when they're ready to perform.
+            </p>
+          </section>
 
-          <div class="md:col-span-4">
-            <div class="glass p-8 space-y-8 sticky top-32 border border-white/10">
-              <div>
-                <h5 class="text-rungreen font-black text-[10px] uppercase tracking-widest mb-2">Location</h5>
-                <p class="text-white font-bold uppercase tracking-tighter">Accra, Ghana</p>
+          <section class="space-y-4">
+            <h4
+              class="text-rungreen font-black uppercase tracking-[0.4em] text-[10px] italic"
+            >
+              For Everyone Who Shows Up
+            </h4>
+            <p class="text-gray-300 text-lg leading-relaxed font-bold italic">
+              This is for the person who set their alarm for 5:30am, hit snooze
+              twice, argued with themselves — and laced up anyway. Walk half,
+              run the rest. 2km or 20km. Just starting or getting back after a
+              long break. The circuit doesn't judge your pace. It only asks that
+              you keep moving — because making active living the default
+              lifestyle of the Ghanaian generation is exactly why we exist.
+            </p>
+            <p
+              class="text-white text-xl font-black italic border-l-4 border-rungreen pl-6"
+            >
+              Run Go Run. Because stopping was never an option.
+            </p>
+          </section>
+        </div>
+
+        <!-- RIGHT: SIDEBAR (hidden on mobile, visible on tablet+) -->
+        <div class="md:col-span-4 space-y-6 hidden sm:block">
+          <div class="sticky top-12 space-y-6">
+            <!-- STAT CARD -->
+            <div
+              class="glass-card-deep rounded-[24px] border border-white/5 p-6 space-y-6"
+            >
+              <div class="border-b border-white/5 pb-4">
+                <h5
+                  class="text-rungreen font-black text-[10px] uppercase tracking-widest mb-1"
+                >
+                  Base
+                </h5>
+                <p
+                  class="text-white font-black uppercase tracking-tighter text-lg"
+                >
+                  Accra, Ghana
+                </p>
               </div>
-              <button @click="() => useWhatsApp().orderOnWhatsApp('About Page Inquiry', 'N/A')" 
-                      class="w-full bg-white text-black py-4 font-black text-[10px] uppercase tracking-widest hover:bg-rungreen transition-all flex items-center justify-center gap-2">
-                WhatsApp <Icon name="mdi:whatsapp" class="text-lg" />
-              </button>
+              <div>
+                <h5
+                  class="text-rungreen font-black text-[10px] uppercase tracking-widest mb-1"
+                >
+                  Order_Channel
+                </h5>
+                <p
+                  class="text-white font-black uppercase tracking-tighter text-lg"
+                >
+                  WhatsApp Terminal
+                </p>
+              </div>
             </div>
+
+            <!-- MOTIVATIONAL PILL -->
+            <div
+              class="glass-card-deep rounded-[24px] border border-rungreen/20 p-6 space-y-3"
+            >
+              <h5
+                class="text-rungreen font-black text-[10px] uppercase tracking-widest"
+              >
+                Daily_Transmission
+              </h5>
+              <p class="text-white font-black italic text-lg leading-snug">
+                "The run you almost skipped is the one that changes everything."
+              </p>
+              <p
+                class="text-gray-500 font-black text-[10px] uppercase tracking-widest"
+              >
+                — Run Go Run Circuit
+              </p>
+            </div>
+
+            <!-- CTAs -->
+            <NuxtLink
+              to="/products"
+              class="block w-full bg-rungreen text-black py-4 rounded-[16px] font-black text-[11px] uppercase tracking-widest text-center hover:bg-white transition-all"
+            >
+              Enter the Inventory
+            </NuxtLink>
+
+            <button
+              @click="() => (useState('contact_modal').value = true)"
+              class="block w-full border border-white/10 text-white py-4 rounded-[16px] font-black text-[11px] uppercase tracking-widest text-center hover:border-rungreen hover:text-rungreen transition-all"
+            >
+              Open Support Terminal
+            </button>
           </div>
         </div>
       </div>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <style scoped>
-.neon-glow { text-shadow: 0 0 15px rgba(223, 255, 0, 0.4); }
-.glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); }
+.neon-glow {
+  text-shadow: 0 0 20px rgba(223, 255, 0, 0.5);
+}
+
+.glass-card-deep {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  backdrop-filter: blur(80px);
+}
 </style>
