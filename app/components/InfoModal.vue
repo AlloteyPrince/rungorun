@@ -44,7 +44,7 @@ defineEmits(["close"]);
               @click="
                 () => {
                   const phone = useAppConfig().brand.whatsappNumber;
-                  const text = `👋 Hello Run Go Run!\n━━━━━━━━━━━━\n💬 Type: General Enquiry\n🌐 Via: RunGoRun Website\n━━━━━━━━━━━━\n`;
+                  const text = `👋 Hello Run Go Run!\n━━━━━━━━━━━━\n💬 Type: Support and Feedback\n🌐 Via: RunGoRun Website\n━━━━━━━━━━━━\n`;
                   window.open(
                     `https://wa.me/${phone}?text=${encodeURIComponent(text)}`,
                     '_blank',
