@@ -5,7 +5,7 @@ import { products } from "~/data/products";
 const { orderOnWhatsApp } = useWhatsApp();
 const visibleSections = ref(new Set());
 
-const featuredProducts = computed(() => products.slice(0, 2));
+const featuredProducts = computed(() => products.slice(-2).reverse());
 const showContact = useState("contact_modal");
 
 onMounted(() => {
