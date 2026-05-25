@@ -5,7 +5,6 @@ useHead({ title: "About | RUNGORUN" });
 <template>
   <div class="min-h-screen bg-runblack pt-32 pb-20">
     <div class="container mx-auto px-5 sm:px-6 max-w-6xl">
-
       <!-- HERO HEADER -->
       <header class="mb-20">
         <span
@@ -123,7 +122,7 @@ useHead({ title: "About | RUNGORUN" });
 
             <!-- CTAs -->
             <NuxtLink
-              to="/products"
+              to="/categories"
               class="block w-full bg-rungreen text-black py-4 rounded-[16px] font-black text-[11px] uppercase tracking-widest text-center hover:bg-white transition-all"
             >
               Enter the Inventory
