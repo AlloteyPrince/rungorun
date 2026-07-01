@@ -1,7 +1,7 @@
 <!-- pages/admin/dashboard.vue -->
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 const posts = ref([]);
 const totalPosts = ref(0);

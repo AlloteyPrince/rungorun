@@ -1,7 +1,7 @@
 <!-- app/pages/blog/index.vue -->
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 const posts = ref([]);
 const loading = ref(true);

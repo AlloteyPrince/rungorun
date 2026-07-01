@@ -2,7 +2,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 const router = useRouter();
 const email = ref("");
