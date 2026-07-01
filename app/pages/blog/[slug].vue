@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, useHead } from "vue";
 import { useRoute } from "vue-router";
+import { supabase } from "~/lib/supabase";
 
 const route = useRoute();
 const post = ref(null);

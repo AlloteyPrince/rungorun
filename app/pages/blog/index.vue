@@ -1,6 +1,7 @@
-<!-- pages/blog/index.vue -->
+<!-- app/pages/blog/index.vue -->
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
+import { supabase } from "~/lib/supabase";
 
 const posts = ref([]);
 const loading = ref(true);
@@ -8,7 +9,7 @@ const visibleSections = ref(new Set());
 const selectedCategory = ref("all");
 const searchQuery = ref("");
 const categories = ref([]);
-const visibleCount = ref(6); // Start with 6 posts
+const visibleCount = ref(6);
 const showSearch = ref(false);
 const searchInput = ref(null);
 
@@ -50,7 +51,6 @@ const fetchPosts = async () => {
 const filteredPosts = computed(() => {
   let result = posts.value;
   
-  // Apply search filter
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase().trim();
     result = result.filter(
@@ -69,17 +69,14 @@ const visiblePosts = computed(() => {
   return filteredPosts.value.slice(0, visibleCount.value);
 });
 
-// ── Check if more posts available ──
 const hasMorePosts = computed(() => {
   return visibleCount.value < filteredPosts.value.length;
 });
 
-// ── Load More Posts ──
 const loadMore = () => {
-  visibleCount.value += 3; // Load 3 more each time
+  visibleCount.value += 3;
 };
 
-// ── Reset pagination when filters change ──
 const resetPagination = () => {
   visibleCount.value = 6;
 };
@@ -97,7 +94,6 @@ const toggleSearch = () => {
   }
 };
 
-// ── Clear Search ──
 const clearSearch = () => {
   searchQuery.value = "";
   resetPagination();
@@ -129,7 +125,6 @@ const truncate = (text, length = 140) => {
   return clean.length > length ? clean.slice(0, length) + "..." : clean;
 };
 
-// ── Watch for category changes ──
 watch(selectedCategory, () => {
   resetPagination();
   fetchPosts();
@@ -155,7 +150,10 @@ onMounted(() => {
 <template>
   <div class="bg-runblack text-white min-h-screen font-['Urbanist',_sans-serif]">
     <!-- ── HERO ── -->
-    <section id="blog-hero" class="relative min-h-[35vh] flex items-center overflow-hidden border-b border-white/5">
+    <section 
+      id="blog-hero" 
+      class="relative min-h-[55vh] md:min-h-[60vh] flex items-center overflow-hidden border-b border-white/5"
+    >
       <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-gradient-to-b from-runblack/40 via-runblack/60 to-runblack z-10"></div>
         <img
@@ -164,7 +162,7 @@ onMounted(() => {
           alt="The Circuit"
         />
       </div>
-      <div class="container mx-auto px-5 sm:px-6 max-w-6xl relative z-20 py-16">
+      <div class="container mx-auto px-5 sm:px-6 max-w-6xl relative z-20">
         <div
           :class="[
             'transition-all duration-1000 transform',
@@ -178,11 +176,11 @@ onMounted(() => {
             <span class="text-white/20 text-2xl font-light">/</span>
             <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">The Run Go Run Blog</span>
           </div>
-          <h1 class="text-[clamp(2.8rem,8vw,5.5rem)] font-black italic uppercase tracking-tighter leading-[0.9] font-['Poppins']">
+          <h1 class="text-[clamp(3rem,10vw,6rem)] font-black italic uppercase tracking-tighter leading-[0.9] font-['Poppins']">
             The <span class="text-rungreen text-shadow-glow">Circuit.</span>
           </h1>
-          <p class="text-gray-300 text-base sm:text-lg italic font-bold max-w-2xl border-l-4 border-rungreen pl-5 leading-tight mt-4">
-            Strategy, sweat, and science from the streets of Accra.
+          <p class="text-gray-300 text-base sm:text-lg md:text-xl italic font-bold max-w-2xl border-l-4 border-rungreen pl-5 md:pl-8 leading-tight mt-4">
+            Stories, practical guides, gear science, and runner-tested strategies for Accra
           </p>
         </div>
       </div>
@@ -220,10 +218,9 @@ onMounted(() => {
 
         <!-- ── SEARCH BUTTON / BAR ── -->
         <div class="flex items-center gap-3 w-full sm:w-auto">
-          <!-- Expanded Search Bar -->
           <div 
             class="relative overflow-hidden transition-all duration-400 ease-in-out"
-            :class="showSearch ? 'w-full sm:w-72 opacity-100 ml-0' : 'w-0 opacity-0 ml-0'"
+            :class="showSearch ? 'w-full sm:w-72 opacity-100' : 'w-0 opacity-0'"
           >
             <input
               ref="searchInput"
@@ -242,7 +239,6 @@ onMounted(() => {
             </button>
           </div>
 
-          <!-- Search Toggle Button -->
           <button
             @click="toggleSearch"
             class="w-11 h-11 rounded-full border border-white/10 hover:border-rungreen/40 hover:bg-rungreen/10 transition-all flex items-center justify-center flex-shrink-0"
@@ -393,7 +389,6 @@ onMounted(() => {
             </button>
           </div>
 
-          <!-- Showing count -->
           <div v-if="filteredPosts.length > 6" class="text-center mt-4 text-[9px] font-black uppercase tracking-widest text-gray-500">
             Showing {{ visiblePosts.length }} of {{ filteredPosts.length }} posts
           </div>
