@@ -159,7 +159,7 @@ onMounted(() => {
       <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-gradient-to-b from-runblack/40 via-runblack/60 to-runblack z-10"></div>
         <img
-          src="/images/blog-hero.jpg"
+          src="/images/blog-hero.jpeg"
           class="w-full h-full object-cover opacity-30 pointer-events-none"
           alt="The Circuit"
         />
