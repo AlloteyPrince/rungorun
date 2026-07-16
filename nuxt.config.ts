@@ -4,7 +4,7 @@ import { resolve } from 'path'
 export default defineNuxtConfig({
   // ✅ Add this to remove the warning
   compatibilityDate: '2026-07-01',
-  
+
   srcDir: 'app/',
   vite: {
     plugins: [tsconfigPaths()]
@@ -22,6 +22,13 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/icon'],
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
+  app: {
+    head: {
+      meta: [
+        { name: 'google-site-verification', content: 'mBJhPlOSC2vRdoWeJoB78zrCWDhIiEyEI_O-3NucdIc' }
+      ]
+    }
+  },
   nitro: {
     preset: 'netlify'
   }
