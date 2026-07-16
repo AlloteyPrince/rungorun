@@ -31,6 +31,17 @@ export default defineNuxtConfig({
   site: {
     url: 'https://rungorun.store'
   },
+
+  sitemap: {
+    exclude: ['/admin/**'],
+    urls: async () => {
+      const { products } = await import('./app/data/products')
+      return products.map((product) => ({
+        loc: `/products/${product.id}`,
+        lastmod: new Date().toISOString()
+      }))
+    }
+  },
   nitro: {
     preset: 'netlify'
   }
