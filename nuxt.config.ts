@@ -36,10 +36,24 @@ export default defineNuxtConfig({
     exclude: ['/admin/**'],
     urls: async () => {
       const { products } = await import('./app/data/products')
-      return products.map((product) => ({
+      const { supabase } = await import('./app/lib/supabase')
+
+      const productUrls = products.map((product) => ({
         loc: `/products/${product.id}`,
         lastmod: new Date().toISOString()
       }))
+
+      const { data: posts } = await supabase
+        .from('posts')
+        .select('slug, updated_at')
+        .eq('published', true)
+
+      const blogUrls = (posts || []).map((post) => ({
+        loc: `/blog/${post.slug}`,
+        lastmod: post.updated_at || new Date().toISOString()
+      }))
+
+      return [...productUrls, ...blogUrls]
     }
   },
   nitro: {
