@@ -2,7 +2,6 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
-  // ✅ Add this to remove the warning
   compatibilityDate: '2026-07-01',
 
   srcDir: 'app/',
@@ -10,7 +9,7 @@ export default defineNuxtConfig({
     plugins: [tsconfigPaths()]
   },
   alias: {
-    '@': resolve(__dirname, 'app'), // Tell Nuxt that @ points to app/
+    '@': resolve(__dirname, 'app'),
   },
   typescript: {
     typeCheck: false,
@@ -19,7 +18,7 @@ export default defineNuxtConfig({
       include: ['app/**/*', 'nuxt.config.ts']
     }
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/icon'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/icon', '@nuxtjs/sitemap'],
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
   app: {
@@ -28,6 +27,9 @@ export default defineNuxtConfig({
         { name: 'google-site-verification', content: 'mBJhPlOSC2vRdoWeJoB78zrCWDhIiEyEI_O-3NucdIc' }
       ]
     }
+  },
+  site: {
+    url: 'https://rungorun.store'
   },
   nitro: {
     preset: 'netlify'
