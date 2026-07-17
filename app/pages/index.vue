@@ -608,6 +608,8 @@ const scrollToSection = (id) => {
         </span>
       </div>
     </div>
+
+    <SubscribeBox source="home" />
   </div>
 </template>
 

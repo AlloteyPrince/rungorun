@@ -490,6 +490,8 @@ onMounted(() => {
         </section>
       </div>
     </div>
+
+    <SubscribeBox source="blog-post" />
   </div>
 </template>
 

@@ -138,6 +138,8 @@ useHead({ title: "About | RUNGORUN" });
         </div>
       </div>
     </div>
+
+    <SubscribeBox source="about" />
   </div>
 </template>
 
