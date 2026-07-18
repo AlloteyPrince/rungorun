@@ -1,5 +1,9 @@
 <!-- pages/admin/blog/index.vue -->
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import { ref, onMounted, computed, watch } from "vue";
 import { supabase } from "../../../lib/supabase";
 

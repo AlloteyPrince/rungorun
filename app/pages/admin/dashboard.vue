@@ -1,5 +1,9 @@
 <!-- pages/admin/dashboard.vue -->
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import { ref, onMounted, computed } from "vue";
 import { supabase } from "../../lib/supabase";
 
@@ -94,6 +98,9 @@ onMounted(() => {
         <div class="flex items-center gap-4">
           <NuxtLink to="/admin/blog" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-rungreen transition-colors">
             Posts
+          </NuxtLink>
+          <NuxtLink to="/admin/subscribers" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-rungreen transition-colors">
+            Subscribers
           </NuxtLink>
           <button
             @click="supabase.auth.signOut()"

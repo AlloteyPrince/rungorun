@@ -50,6 +50,11 @@ const subscribe = async () => {
 
   localStorage.setItem(STORAGE_KEY, "true");
   status.value = "success";
+
+  $fetch("/api/subscribe/welcome", {
+    method: "POST",
+    body: { email: email.value.trim().toLowerCase() },
+  }).catch((err) => console.error("Welcome email failed:", err));
 };
 </script>
 

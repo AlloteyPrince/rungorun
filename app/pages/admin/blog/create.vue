@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { supabase } from "../../../lib/supabase";

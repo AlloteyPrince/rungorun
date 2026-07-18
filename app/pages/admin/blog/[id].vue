@@ -1,5 +1,9 @@
 <!-- pages/admin/blog/[id].vue -->
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { supabase } from "../../../lib/supabase";
