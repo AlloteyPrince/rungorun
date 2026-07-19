@@ -149,7 +149,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-runblack font-['Urbanist',_sans-serif]">
     <!-- Header -->
-    <header class="border-b border-white/5 py-4 px-5 sm:px-8">
+    <header class="sticky top-0 z-50 bg-runblack/80 backdrop-blur border-b border-white/5 py-4 px-5 sm:px-8">
       <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="flex items-center gap-6">
           <NuxtLink to="/admin/dashboard" class="text-rungreen font-black italic text-xl font-['Poppins']">
