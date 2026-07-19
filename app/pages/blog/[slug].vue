@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
+import DOMPurify from "dompurify";
 import { supabase } from "../../lib/supabase";
 
 const route = useRoute();
@@ -12,7 +13,6 @@ const newComment = ref({ name: "", email: "", content: "" });
 const likes = ref(0);
 const hasLiked = ref(false);
 const relatedPosts = ref([]);
-const tocItems = ref([]);
 
 // ── SEO Meta Tags ──
 const seoTitle = computed(() => 
@@ -21,12 +21,7 @@ const seoTitle = computed(() =>
 
 const seoDescription = computed(() => {
   if (!post.value) return "Strategy, sweat, and science from the streets of Accra.";
-  // Strip markdown and truncate
-  const clean = post.value.content
-    .replace(/!\[.*?\]\(.*?\)/g, "")
-    .replace(/\[.*?\]\(.*?\)/g, "")
-    .replace(/[#*`~_>]/g, "")
-    .trim();
+  const clean = getExcerptText(post.value.content);
   return clean.length > 160 ? clean.slice(0, 157) + "..." : clean;
 });
 
@@ -139,8 +134,6 @@ const fetchPost = async () => {
         .maybeSingle();
       hasLiked.value = !!likeData;
     }
-
-    generateTOC(data.content);
   } catch (err) {
     error.value = err.message;
   } finally {
@@ -233,18 +226,6 @@ const shareOn = (platform) => {
   if (shareUrls[platform]) window.open(shareUrls[platform], "_blank");
 };
 
-// ── Table of Contents ──
-const generateTOC = (content) => {
-  if (!content) return;
-  const headings = content.match(/^#{2,3}\s.+$/gm) || [];
-  tocItems.value = headings.map((h) => {
-    const level = h.startsWith("###") ? 3 : 2;
-    const text = h.replace(/^#{2,3}\s/, "");
-    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    return { level, text, id };
-  });
-};
-
 const formatDate = (dateStr) => {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-GH", {
@@ -254,17 +235,27 @@ const formatDate = (dateStr) => {
   });
 };
 
-const renderContent = (content) => {
-  if (!content) return "";
-  let html = content;
-  html = html.replace(/^### (.*$)/gim, '<h3 id="$1">$1</h3>');
-  html = html.replace(/^## (.*$)/gim, '<h2 id="$1">$1</h2>');
-  html = html.replace(/^# (.*$)/gim, '<h1 id="$1">$1</h1>');
-  html = html.replace(/^(?!<h[1-3]|<\/?[uo]l|<\/?li|<\/?blockquote|<\/?br)(.+)$/gim, "<p>$1</p>");
-  html = html.replace(/^> (.*$)/gim, "<blockquote>$1</blockquote>");
-  html = html.replace(/^- (.*$)/gim, "<li>$1</li>");
-  return html;
-};
+// ── Content rendering ──
+// isHtmlContent/markdownToHtml/injectHeadingIds/getExcerptText come from
+// app/utils/markdown.ts (auto-imported). Legacy posts (plain text/markdown,
+// from the old textarea editor) get converted on the fly; posts saved from
+// the RichTextEditor are already HTML. injectHeadingIds also stamps ids onto
+// headings so direct #anchor links still work even without a visible TOC.
+const processedContent = computed(() => {
+  if (!post.value?.content) return { html: "", headings: [] };
+  return injectHeadingIds(post.value.content);
+});
+
+// DOMPurify needs a browser `window` — fetchPost() only ever runs in
+// onMounted, so post.value is always null during SSR and this returns ""
+// before DOMPurify.sanitize is ever reached server-side.
+const sanitizedContent = computed(() => {
+  if (!import.meta.client || !processedContent.value.html) return "";
+  return DOMPurify.sanitize(processedContent.value.html, {
+    ALLOWED_TAGS: ["p", "h1", "h2", "h3", "strong", "em", "a", "ul", "ol", "li", "blockquote", "img", "br"],
+    ALLOWED_ATTR: ["id", "href", "target", "rel", "src", "alt"],
+  });
+});
 
 onMounted(() => {
   fetchPost();
@@ -292,7 +283,7 @@ onMounted(() => {
     <!-- Post -->
     <div v-else-if="post">
       <!-- Hero -->
-      <section class="relative min-h-[50vh] flex items-center overflow-hidden border-b border-white/5">
+      <section class="relative overflow-hidden">
         <div class="absolute inset-0 z-0">
           <div class="absolute inset-0 bg-gradient-to-b from-runblack/40 via-runblack/60 to-runblack z-10"></div>
           <img
@@ -301,7 +292,7 @@ onMounted(() => {
             :alt="post.title"
           />
         </div>
-        <div class="container mx-auto px-5 sm:px-6 max-w-4xl relative z-20 py-20">
+        <div class="container mx-auto px-5 sm:px-6 max-w-4xl relative z-20 pt-20 pb-8 sm:pb-14">
           <div class="flex items-center gap-4 mb-6 text-[10px] font-black uppercase tracking-widest text-gray-500">
             <span class="text-rungreen">{{ post.category || 'Circuit' }}</span>
             <span class="w-1 h-1 rounded-full bg-white/20"></span>
@@ -332,32 +323,11 @@ onMounted(() => {
       </section>
 
       <div class="container mx-auto px-5 sm:px-6 max-w-6xl">
-        <div class="flex flex-col lg:flex-row gap-12 py-16">
-          <!-- ── TABLE OF CONTENTS ── -->
-          <aside v-if="tocItems.length > 0" class="lg:w-72 flex-shrink-0">
-            <div class="sticky top-8 glass-card-deep rounded-3xl p-6 border border-white/5">
-              <p class="text-[10px] font-black uppercase tracking-widest text-rungreen mb-4">In This Circuit</p>
-              <ul class="space-y-2">
-                <li
-                  v-for="item in tocItems"
-                  :key="item.id"
-                  :style="`padding-left: ${(item.level - 2) * 16}px`"
-                >
-                  <a
-                    :href="`#${item.id}`"
-                    class="text-xs font-bold text-gray-400 hover:text-rungreen transition-colors block"
-                  >
-                    {{ item.text }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </aside>
-
+        <div class="pt-6 sm:pt-10 pb-16">
           <!-- ── CONTENT ── -->
-          <div class="flex-1 min-w-0">
+          <div class="max-w-3xl mx-auto">
             <div class="prose prose-invert prose-lg max-w-none">
-              <div v-html="renderContent(post.content)" class="text-gray-200 leading-relaxed"></div>
+              <div v-html="sanitizedContent" class="text-gray-200 leading-relaxed"></div>
             </div>
 
             <!-- Tags -->
@@ -499,58 +469,5 @@ onMounted(() => {
 .glass-card-deep {
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
   backdrop-filter: blur(80px);
-}
-
-.prose h1,
-.prose h2,
-.prose h3 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  color: white;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.prose h1 { font-size: 2.5rem; }
-.prose h2 { font-size: 1.8rem; }
-.prose h3 { font-size: 1.3rem; }
-
-.prose p {
-  color: #d1d5db;
-  font-weight: 700;
-  font-style: italic;
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-}
-
-.prose blockquote {
-  border-left: 4px solid #dfff00;
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-  color: #9ca3af;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.prose ul,
-.prose ol {
-  color: #d1d5db;
-  font-weight: 700;
-  font-style: italic;
-  padding-left: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.prose li {
-  margin-bottom: 0.5rem;
-}
-
-.prose img {
-  border-radius: 24px;
-  margin: 2rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 </style>

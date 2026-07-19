@@ -290,17 +290,9 @@ onMounted(() => {
         <!-- Content -->
         <div>
           <label class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
-            Content (Markdown)
+            Content
           </label>
-          <textarea
-            v-model="post.content"
-            rows="20"
-            placeholder="Write your post in Markdown..."
-            class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 text-sm font-bold focus:outline-none focus:border-rungreen/50 transition-all font-mono leading-relaxed"
-          ></textarea>
-          <p class="mt-2 text-gray-500 text-[10px] font-bold italic">
-            Supports # Headers, > Blockquotes, - Lists, and ![alt](image-url)
-          </p>
+          <AdminRichTextEditor v-model="post.content" />
         </div>
       </div>
     </div>

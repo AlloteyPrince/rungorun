@@ -46,7 +46,15 @@ const fetchPost = async () => {
       id: postData.id,
       title: postData.title || "",
       slug: postData.slug || "",
-      content: postData.content || "",
+      // Legacy posts stored plain-text/markdown content for the old textarea
+      // editor. Convert once here so the editor shows real paragraphs
+      // instead of one text blob. Saving (even as a draft) then writes the
+      // converted HTML back, migrating the post for good.
+      content: postData.content
+        ? isHtmlContent(postData.content)
+          ? postData.content
+          : markdownToHtml(postData.content)
+        : "",
       category: postData.category || "",
       featured_image: postData.featured_image || "",
       published: postData.published || false,
@@ -376,17 +384,9 @@ onMounted(() => {
         <!-- Content -->
         <div>
           <label class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
-            Content (Markdown)
+            Content
           </label>
-          <textarea
-            v-model="post.content"
-            rows="20"
-            placeholder="Write your post in Markdown..."
-            class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 text-sm font-bold focus:outline-none focus:border-rungreen/50 transition-all font-mono leading-relaxed"
-          ></textarea>
-          <p class="mt-2 text-gray-500 text-[10px] font-bold italic">
-            Supports # Headers, > Blockquotes, - Lists, and ![alt](image-url)
-          </p>
+          <AdminRichTextEditor v-model="post.content" />
         </div>
 
         <!-- Preview Link -->

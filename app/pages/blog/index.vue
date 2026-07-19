@@ -110,18 +110,9 @@ const formatDate = (dateStr) => {
   });
 };
 
-const stripMarkdown = (text) => {
-  if (!text) return "";
-  return text
-    .replace(/!\[.*?\]\(.*?\)/g, "")
-    .replace(/\[.*?\]\(.*?\)/g, "")
-    .replace(/[#*`~_>]/g, "")
-    .trim();
-};
-
 const truncate = (text, length = 140) => {
   if (!text) return "";
-  const clean = stripMarkdown(text);
+  const clean = getExcerptText(text);
   return clean.length > length ? clean.slice(0, length) + "..." : clean;
 };
 

@@ -17,3 +17,75 @@ body {
 .neon-glow {
   text-shadow: 0 0 15px rgba(223, 255, 0, 0.4);
 }
+
+/* Shared blog post-content typography — used by both the published post
+   (app/pages/blog/[slug].vue) and the admin RichTextEditor's live view, so
+   what the admin sees while editing matches what readers see. */
+.prose h1,
+.prose h2,
+.prose h3 {
+  font-weight: 800;
+  font-style: italic;
+  color: white;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 6rem;
+}
+
+.prose h1 { font-size: 1.75rem; }
+.prose h2 { font-size: 1.4rem; }
+.prose h3 { font-size: 1.15rem; }
+
+.prose p {
+  color: #d1d5db;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.prose blockquote {
+  border-left: 4px solid #dfff00;
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  color: #9ca3af;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  color: #d1d5db;
+  font-weight: 700;
+  font-style: italic;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+/* TipTap wraps list-item / blockquote text in a nested <p>, not bare text —
+   without this, .prose p's margin-bottom double-spaces every item/quote. */
+.prose li > p,
+.prose blockquote > p {
+  margin: 0;
+}
+
+.prose img {
+  border-radius: 24px;
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.prose strong {
+  color: white;
+  font-weight: 900;
+}
+
+.prose a {
+  color: #dfff00;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
