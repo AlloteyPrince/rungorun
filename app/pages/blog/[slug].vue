@@ -292,7 +292,7 @@ onMounted(() => {
             :alt="post.title"
           />
         </div>
-        <div class="container mx-auto px-5 sm:px-6 max-w-4xl relative z-20 pt-20 pb-8 sm:pb-14">
+        <div class="container mx-auto px-5 sm:px-6 max-w-4xl relative z-20 pt-32 pb-8 sm:pb-14">
           <div class="flex items-center gap-4 mb-6 text-[10px] font-black uppercase tracking-widest text-gray-500">
             <span class="text-rungreen">{{ post.category || 'Circuit' }}</span>
             <span class="w-1 h-1 rounded-full bg-white/20"></span>
