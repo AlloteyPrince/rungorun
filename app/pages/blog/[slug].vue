@@ -1,18 +1,46 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import DOMPurify from "dompurify";
 import { supabase } from "../../lib/supabase";
 
 const route = useRoute();
-const post = ref(null);
-const loading = ref(true);
-const error = ref(null);
+
+// ── Fetch Post ──
+// useAsyncData runs on the server too, so the first HTML response already
+// contains the real post data. That matters for sharing: platforms like
+// WhatsApp/Facebook/Twitter/Slack read the og:* tags below straight from the
+// raw HTML without running JS, so if this fetch only happened in onMounted
+// (client-only), shared links would always show the generic site fallback
+// instead of this post's title/image.
+const { data: post, pending: loading, error: postError } = await useAsyncData(
+  () => `post-${route.params.slug}`,
+  async () => {
+    const { data, error: err } = await supabase
+      .from("posts")
+      .select(`
+        *,
+        authors:author_id (name, bio, avatar),
+        post_tags:post_tags (tags:tag_id (name, slug))
+      `)
+      .eq("slug", route.params.slug)
+      .eq("published", true)
+      .single();
+
+    if (err) throw err;
+    return data;
+  },
+  { watch: [() => route.params.slug] }
+);
+const error = computed(() => postError.value?.message || null);
+
 const comments = ref([]);
 const newComment = ref({ name: "", email: "", content: "" });
 const likes = ref(0);
 const hasLiked = ref(false);
 const relatedPosts = ref([]);
+
+watch(post, (val) => { likes.value = val?.likes || 0; }, { immediate: true });
 
 // ── SEO Meta Tags ──
 const seoTitle = computed(() => 
@@ -90,56 +118,6 @@ useHead({
     },
   ],
 });
-
-// ── Fetch Post ──
-const fetchPost = async () => {
-  loading.value = true;
-  try {
-    const { data, error: err } = await supabase
-      .from("posts")
-      .select(`
-        *,
-        authors:author_id (name, bio, avatar),
-        post_tags:post_tags (tags:tag_id (name, slug))
-      `)
-      .eq("slug", route.params.slug)
-      .eq("published", true)
-      .single();
-
-    if (err) throw err;
-    post.value = data;
-    likes.value = data.likes || 0;
-
-    await supabase
-      .from("posts")
-      .update({ views: (data.views || 0) + 1 })
-      .eq("id", data.id);
-
-    await supabase.from("page_views").insert({
-      page: `/blog/${data.slug}`,
-      post_id: data.id,
-      visitor_id: localStorage.getItem("visitor_id") || crypto.randomUUID(),
-    });
-
-    await fetchComments();
-    await fetchRelatedPosts();
-
-    const visitorId = localStorage.getItem("visitor_id");
-    if (visitorId) {
-      const { data: likeData } = await supabase
-        .from("post_likes")
-        .select("id")
-        .eq("post_id", data.id)
-        .eq("visitor_id", visitorId)
-        .maybeSingle();
-      hasLiked.value = !!likeData;
-    }
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
-};
 
 // ── Fetch Comments ──
 const fetchComments = async () => {
@@ -246,9 +224,8 @@ const processedContent = computed(() => {
   return injectHeadingIds(post.value.content);
 });
 
-// DOMPurify needs a browser `window` — fetchPost() only ever runs in
-// onMounted, so post.value is always null during SSR and this returns ""
-// before DOMPurify.sanitize is ever reached server-side.
+// DOMPurify needs a browser `window`, which doesn't exist server-side —
+// this returns "" during SSR and fills in once the client hydrates.
 const sanitizedContent = computed(() => {
   if (!import.meta.client || !processedContent.value.html) return "";
   return DOMPurify.sanitize(processedContent.value.html, {
@@ -257,9 +234,43 @@ const sanitizedContent = computed(() => {
   });
 });
 
-onMounted(() => {
-  fetchPost();
-});
+// ── Client-only side effects (view count, comments, related, like status) ──
+// Runs once on initial client load and again whenever `post` changes (e.g.
+// clicking a related post). Guarded to skip on the server, since it touches
+// localStorage and shouldn't count bot/crawler traffic as a view.
+watch(
+  post,
+  async (val) => {
+    if (!import.meta.client || !val) return;
+
+    await supabase
+      .from("posts")
+      .update({ views: (val.views || 0) + 1 })
+      .eq("id", val.id);
+
+    await supabase.from("page_views").insert({
+      page: `/blog/${val.slug}`,
+      post_id: val.id,
+      visitor_id: localStorage.getItem("visitor_id") || crypto.randomUUID(),
+    });
+
+    await fetchComments();
+    await fetchRelatedPosts();
+
+    const visitorId = localStorage.getItem("visitor_id");
+    hasLiked.value = false;
+    if (visitorId) {
+      const { data: likeData } = await supabase
+        .from("post_likes")
+        .select("id")
+        .eq("post_id", val.id)
+        .eq("visitor_id", visitorId)
+        .maybeSingle();
+      hasLiked.value = !!likeData;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

@@ -1,5 +1,10 @@
 <script setup>
-useHead({ title: "About | RUNGORUN" });
+useHead({
+  title: 'About Run Go Run | Engineered Running Gear, Accra',
+  meta: [
+    { name: 'description', content: "Run Go Run designs running gear built for Accra's streets and heat. No shortcuts, no soft gear — just kit engineered for runners who show up daily." }
+  ]
+})
 </script>
 
 <template>
