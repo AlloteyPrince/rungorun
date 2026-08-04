@@ -128,6 +128,13 @@ const savePost = async (publish = false) => {
 
     if (updateError) throw updateError;
 
+    if (publish) {
+      $fetch("/api/indexnow", {
+        method: "POST",
+        body: { urls: [`https://rungorun.store/blog/${post.value.slug}`, "https://rungorun.store/blog"] },
+      }).catch(() => {});
+    }
+
     await supabase.from("post_tags").delete().eq("post_id", post.value.id);
     
     if (selectedTags.value.length > 0) {

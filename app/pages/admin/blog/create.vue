@@ -94,6 +94,13 @@ const savePost = async (publish = false) => {
 
     if (result.error) throw result.error;
 
+    if (publish) {
+      $fetch("/api/indexnow", {
+        method: "POST",
+        body: { urls: [`https://rungorun.store/blog/${post.value.slug}`, "https://rungorun.store/blog"] },
+      }).catch(() => {});
+    }
+
     // Handle tags
     if (selectedTags.value.length > 0 && result.data) {
       const postId = result.data.id;
