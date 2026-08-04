@@ -6,8 +6,8 @@ const { isMobileMenuOpen, closeMenu, toggleMenu } = useMobileMenu();
 
 const navLinks = [
   { name: "Home", path: "#hero" },
-  { name: "Categories", path: "#categories" },
   { name: "Inventory", path: "/categories" },
+  { name: "Blog", path: "/blog" },
   { name: "About", path: "/about" },
 ];
 

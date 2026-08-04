@@ -7,7 +7,7 @@ const route = useRoute()
 
 const navLinks = [
   { name: 'Home', path: '#hero' },
-  { name: 'Categories', path: '#categories' },
+  { name: 'Blog', path: '/blog' },
   { name: 'About', path: '/about' }
 ]
 
