@@ -1,5 +1,4 @@
-const INDEXNOW_KEY = '6e56deb08ed7ad3562f31f2cf3f4d3aa'
-const INDEXNOW_HOST = 'rungorun.store'
+import { INDEXNOW_KEY, INDEXNOW_HOST } from '../../server/utils/indexNowKey.js'
 
 export default {
   onSuccess: async ({ constants }) => {

@@ -2,6 +2,19 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { supabase } from "../../lib/supabase";
+import { SITE_URL } from "~/utils/seo";
+
+useHead({
+  title: "The Circuit | Run Go Run Blog — Running Guides & Gear Science for Accra",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Stories, practical guides, gear science, and runner-tested strategies for Accra. The Run Go Run blog covers training, gear, and active living.",
+    },
+  ],
+  link: [{ rel: "canonical", href: `${SITE_URL}/blog` }],
+});
 
 const posts = ref([]);
 const loading = ref(true);

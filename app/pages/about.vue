@@ -1,9 +1,26 @@
 <script setup>
+import { SITE_NAME, SITE_URL } from '~/utils/seo'
+
+const seoTitle = 'About Run Go Run | Engineered Running Gear, Accra'
+const seoDescription = "Run Go Run designs running gear built for Accra's streets and heat. No shortcuts, no soft gear — just kit engineered for runners who show up daily."
+const canonicalUrl = `${SITE_URL}/about`
+
 useHead({
-  title: 'About Run Go Run | Engineered Running Gear, Accra',
-  meta: [
-    { name: 'description', content: "Run Go Run designs running gear built for Accra's streets and heat. No shortcuts, no soft gear — just kit engineered for runners who show up daily." }
-  ]
+  title: seoTitle,
+  meta: [{ name: 'description', content: seoDescription }],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+})
+
+useSeoMeta({
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
+  ogImage: `${SITE_URL}/og-image.jpg`,
+  ogUrl: canonicalUrl,
+  ogType: 'website',
+  ogSiteName: SITE_NAME,
+  twitterCard: 'summary_large_image',
+  twitterTitle: seoTitle,
+  twitterDescription: seoDescription,
 })
 </script>
 

@@ -1,9 +1,40 @@
 <script setup>
 import { useWhatsApp } from "~/composables/useWhatsApp";
 import { products } from "~/data/products";
+import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION } from "~/utils/seo";
 
 const { orderOnWhatsApp } = useWhatsApp();
 const visibleSections = ref(new Set());
+
+useHead({
+  link: [{ rel: "canonical", href: SITE_URL }],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: `${SITE_URL}/apple-touch-icon.png`,
+        description: DEFAULT_DESCRIPTION,
+        areaServed: {
+          "@type": "City",
+          name: "Accra",
+        },
+      }),
+    },
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: SITE_URL,
+      }),
+    },
+  ],
+});
 
 const featuredProducts = computed(() => products.slice(-2).reverse());
 const showContact = useState("contact_modal");

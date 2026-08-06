@@ -1,6 +1,7 @@
 <script setup>
 import { getProductById } from "~/data/products";
 import { useWhatsApp } from "~/composables/useWhatsApp";
+import { SITE_NAME, SITE_URL, absoluteUrl } from "~/utils/seo";
 
 const route = useRoute();
 const { orderOnWhatsApp } = useWhatsApp();
@@ -28,14 +29,52 @@ const handleOrder = () => {
   );
 };
 
-useHead({ title: `${product?.name} | RUNGORUN` });
+const seoTitle = `${product?.name} | ${SITE_NAME}`;
+const seoDescription = `GHS ${product?.price} - ${product?.description}`;
+const seoImage = product?.images?.[0] ? absoluteUrl(product.images[0]) : `${SITE_URL}/og-image.jpg`;
+const canonicalUrl = absoluteUrl(`/products/${product?.id}`);
+
+useHead({
+  title: seoTitle,
+  meta: [{ name: "description", content: seoDescription }],
+  link: [{ rel: "canonical", href: canonicalUrl }],
+  script: product
+    ? [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.name,
+            description: product.description,
+            image: product.images?.map((img) => absoluteUrl(img)) ?? [],
+            sku: product.id,
+            category: product.category,
+            brand: { "@type": "Brand", name: SITE_NAME },
+            offers: {
+              "@type": "Offer",
+              url: canonicalUrl,
+              priceCurrency: "GHS",
+              price: product.price,
+              availability: "https://schema.org/InStock",
+              itemCondition: "https://schema.org/NewCondition",
+            },
+          }),
+        },
+      ]
+    : [],
+});
 
 useSeoMeta({
-  ogTitle: `${product?.name} | RUN GO RUN`,
-  ogDescription: `GHS ${product?.price} - ${product?.description}`,
-  ogImage: `https://rungorun.netlify.app${product?.images?.[0]}`,
-  ogUrl: `https://rungorun.netlify.app/products/${product?.id}`,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
+  ogImage: seoImage,
+  ogUrl: canonicalUrl,
+  ogType: "website",
   twitterCard: "summary_large_image",
+  twitterTitle: seoTitle,
+  twitterDescription: seoDescription,
+  twitterImage: seoImage,
 });
 </script>
 

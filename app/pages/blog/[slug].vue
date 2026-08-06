@@ -3,6 +3,7 @@ import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import DOMPurify from "dompurify";
 import { supabase } from "../../lib/supabase";
+import { SITE_NAME, DEFAULT_LOGO_IMAGE } from "~/utils/seo";
 
 const route = useRoute();
 
@@ -80,6 +81,7 @@ useHead({
     { name: "twitter:image", content: seoImage },
     // Article metadata
     { property: "article:published_time", content: post.value?.published_at },
+    { property: "article:modified_time", content: post.value?.updated_at || post.value?.published_at },
     { property: "article:author", content: post.value?.authors?.name },
     { property: "article:tag", content: post.value?.post_tags?.map(t => t.tags.name).join(", ") },
   ],
@@ -104,10 +106,10 @@ useHead({
         },
         publisher: {
           "@type": "Organization",
-          name: "Run Go Run",
+          name: SITE_NAME,
           logo: {
             "@type": "ImageObject",
-            url: "https://rungorun.store/images/logo.png",
+            url: DEFAULT_LOGO_IMAGE,
           },
         },
         mainEntityOfPage: {

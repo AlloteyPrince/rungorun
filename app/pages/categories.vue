@@ -1,10 +1,38 @@
 <script setup>
 import { products } from '~/data/products'
+import { SITE_URL, absoluteUrl } from '~/utils/seo'
+
 const activeCategory = ref('All')
 const categories = ['All', 'Apparel', 'Accessories', 'Support', 'Metric Tech']
 const filteredProducts = computed(() => {
   if (activeCategory.value === 'All') return products
   return products.filter(p => p.category === activeCategory.value)
+})
+
+useHead({
+  title: 'The Inventory | Shop Running Gear — Run Go Run',
+  meta: [
+    {
+      name: 'description',
+      content: 'Browse the full Run Go Run inventory — running vests, armbands, apparel, and recovery gear engineered for Accra runners. Order fast via WhatsApp.',
+    },
+  ],
+  link: [{ rel: 'canonical', href: `${SITE_URL}/categories` }],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: products.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: absoluteUrl(`/products/${p.id}`),
+          name: p.name,
+        })),
+      }),
+    },
+  ],
 })
 </script>
 
