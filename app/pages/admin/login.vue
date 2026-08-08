@@ -25,7 +25,7 @@ const handleLogin = async () => {
     });
     
     if (err) throw err;
-    router.push("/admin/dashboard");
+    router.push("/admin");
   } catch (err) {
     error.value = err.message || "Invalid credentials";
   } finally {

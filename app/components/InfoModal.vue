@@ -1,6 +1,8 @@
 <script setup>
 defineProps(["isOpen", "title"]);
 defineEmits(["close"]);
+
+const { data: settings } = useSiteSettings();
 </script>
 
 <template>
@@ -43,7 +45,7 @@ defineEmits(["close"]);
             <button
               @click="
                 () => {
-                  const phone = useAppConfig().brand.whatsappNumber;
+                  const phone = settings.whatsapp_number;
                   const text = `👋 Hello Run Go Run!\n━━━━━━━━━━━━\n💬 Type: Support and Feedback\n🌐 Via: RunGoRun Website\n━━━━━━━━━━━━\n`;
                   window.open(
                     `https://wa.me/${phone}?text=${encodeURIComponent(text)}`,

@@ -10,6 +10,8 @@ import { supabase } from "../../lib/supabase";
 
 const router = useRouter();
 const count = ref(null);
+const breakdown = ref([]);
+const unanswered = ref(0);
 const loadingCount = ref(true);
 const subject = ref("");
 const message = ref("");
@@ -34,6 +36,8 @@ const fetchCount = async () => {
   try {
     const data = await authedFetch("/api/admin/subscribers");
     count.value = data.count;
+    breakdown.value = data.breakdown || [];
+    unanswered.value = data.unanswered || 0;
   } catch (err) {
     console.error("Failed to load subscriber count:", err);
   } finally {
@@ -107,6 +111,38 @@ onMounted(async () => {
           </p>
         </div>
         <Icon name="ph:users-three-bold" class="text-white/10 text-5xl" />
+      </div>
+
+      <!-- Referral Breakdown -->
+      <div v-if="!loadingCount" class="glass-card-deep rounded-3xl p-6 border border-white/5 mb-6">
+        <h2 class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">
+          Where Subscribers Found Us
+        </h2>
+        <div v-if="breakdown.length === 0 && unanswered === 0" class="text-gray-600 text-sm font-bold italic">
+          No responses yet.
+        </div>
+        <div v-else class="space-y-2">
+          <div
+            v-for="item in breakdown"
+            :key="item.source"
+            class="flex items-center justify-between gap-4"
+          >
+            <span class="text-white text-sm font-bold truncate">{{ item.source }}</span>
+            <div class="flex items-center gap-3 flex-1 max-w-xs">
+              <div class="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                <div
+                  class="h-full bg-rungreen rounded-full"
+                  :style="`width: ${(item.count / (count || 1)) * 100}%`"
+                ></div>
+              </div>
+              <span class="text-rungreen text-xs font-black w-8 text-right">{{ item.count }}</span>
+            </div>
+          </div>
+          <div v-if="unanswered > 0" class="flex items-center justify-between gap-4 pt-2 border-t border-white/5 mt-2">
+            <span class="text-gray-500 text-sm font-bold italic truncate">Skipped / no answer</span>
+            <span class="text-gray-500 text-xs font-black">{{ unanswered }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="glass-card-deep rounded-3xl p-6 md:p-8 border border-white/5">

@@ -3,6 +3,15 @@ const showContact = useState("contact_modal");
 const router = useRouter();
 const route = useRoute();
 
+const { data: siteSettings } = useSiteSettings();
+const socialLinks = computed(() =>
+  [
+    { url: siteSettings.value.instagram_url, icon: "ph:instagram-logo-bold", label: "Instagram" },
+    { url: siteSettings.value.facebook_url, icon: "ph:facebook-logo-bold", label: "Facebook" },
+    { url: siteSettings.value.tiktok_url, icon: "ph:tiktok-logo-bold", label: "TikTok" },
+  ].filter((s) => s.url)
+);
+
 const handleFooterLink = async (path) => {
   if (path.startsWith("#")) {
     if (route.path === "/") {
@@ -98,12 +107,28 @@ const handleFooterLink = async (path) => {
 
       <!-- COPYRIGHT LINE -->
       <div
-        class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 opacity-40"
+        class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4"
       >
-        <p class="text-[10px] font-black uppercase tracking-widest">
+        <p class="text-[10px] font-black uppercase tracking-widest opacity-40">
           © Copyright 2026 Run Go Run. All Rights Reserved.
         </p>
-        <p class="text-[10px] font-black uppercase tracking-widest">
+
+        <!-- SOCIAL ICONS (only rendered once an admin has filled in a handle) -->
+        <div v-if="socialLinks.length" class="flex items-center gap-4">
+          <a
+            v-for="s in socialLinks"
+            :key="s.label"
+            :href="s.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            :aria-label="s.label"
+            class="text-gray-500 hover:text-rungreen transition-colors"
+          >
+            <Icon :name="s.icon" class="text-lg" />
+          </a>
+        </div>
+
+        <p class="text-[10px] font-black uppercase tracking-widest opacity-40">
           Accra, Ghana
         </p>
       </div>

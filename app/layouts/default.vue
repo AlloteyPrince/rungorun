@@ -1,6 +1,7 @@
 <script setup>
 const showContact = useState('contact_modal', () => false)
 const { isMobileMenuOpen, closeMenu } = useMobileMenu()
+const { data: siteSettings } = useSiteSettings()
 
 const router = useRouter()
 const route = useRoute()
@@ -94,9 +95,9 @@ const shareWebsite = async () => {
             </div>
           </div>
           <div class="space-y-4">
-            <a 
-              href="https://wa.me/233270751657" 
-              target="_blank" 
+            <a
+              :href="`https://wa.me/${siteSettings.whatsapp_number}`"
+              target="_blank"
               class="btn-global flex items-center gap-4 px-6 py-5 rounded-[25px] bg-rungreen text-black hover:scale-[1.02] transition-all duration-500"
             >
               <Icon name="ph:whatsapp-logo-bold" class="text-4xl" />

@@ -3,7 +3,7 @@ import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import DOMPurify from "dompurify";
 import { supabase } from "../../lib/supabase";
-import { SITE_NAME, DEFAULT_LOGO_IMAGE } from "~/utils/seo";
+import { SITE_NAME, DEFAULT_LOGO_IMAGE, keywordsMeta } from "~/utils/seo";
 
 const route = useRoute();
 
@@ -67,6 +67,11 @@ useHead({
   title: seoTitle,
   meta: [
     { name: "description", content: seoDescription },
+    keywordsMeta([
+      ...(post.value?.post_tags?.map((t) => t.tags.name) ?? []),
+      post.value?.category,
+      post.value?.title,
+    ].filter(Boolean)),
     // Open Graph
     { property: "og:title", content: seoTitle },
     { property: "og:description", content: seoDescription },

@@ -1,6 +1,7 @@
 // composables/useWhatsApp.ts
 export const useWhatsApp = () => {
   const appConfig = useAppConfig();
+  const { data: settings } = useSiteSettings();
 
   const orderOnWhatsApp = (
     productName: string,
@@ -9,7 +10,7 @@ export const useWhatsApp = () => {
     size: string = "M",
     productId: string = "",
   ) => {
-    const phone = appConfig.brand.whatsappNumber;
+    const phone = settings.value.whatsapp_number;
     const total = (parseFloat(price) * quantity).toFixed(2);
     const productUrl = `https://rungorun.store/products/${productId}`;
 
@@ -23,7 +24,7 @@ export const useWhatsApp = () => {
 ━━━━━━━━━━━━━━━
 🔗 *View Product:* ${productUrl}
 ━━━━━━━━━━━━━━━
-${appConfig.brand.whatsappMessage}`;
+${settings.value.whatsapp_message}`;
 
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");

@@ -1,19 +1,19 @@
 <script setup>
-import { getProductById } from "~/data/products";
+import { useProduct } from "~/composables/useProducts";
 import { useWhatsApp } from "~/composables/useWhatsApp";
-import { SITE_NAME, SITE_URL, absoluteUrl } from "~/utils/seo";
+import { SITE_NAME, SITE_URL, absoluteUrl, keywordsMeta } from "~/utils/seo";
 
 const route = useRoute();
 const { orderOnWhatsApp } = useWhatsApp();
 
 const showContact = useState("contact_modal", () => false);
-const product = getProductById(route.params.id);
-if (!product) navigateTo("/categories");
+const { data: product } = await useProduct(() => route.params.id);
+if (!product.value) navigateTo("/categories");
 
-const activeImage = ref(product?.images?.[0] ?? null);
+const activeImage = ref(product.value?.images?.[0] ?? null);
 const quantity = ref(1);
-const selectedSize = ref(product?.sizes?.[0] ?? "Standard");
-const sizes = product?.sizes ?? [];
+const selectedSize = ref(product.value?.sizes?.[0] ?? "Standard");
+const sizes = computed(() => product.value?.sizes ?? []);
 
 const updateQuantity = (val) => {
   if (quantity.value + val >= 1) quantity.value += val;
@@ -21,41 +21,49 @@ const updateQuantity = (val) => {
 
 const handleOrder = () => {
   orderOnWhatsApp(
-    product.name,
-    product.price,
+    product.value.name,
+    product.value.price,
     quantity.value,
     selectedSize.value,
-    product.id,
+    product.value.id,
   );
 };
 
-const seoTitle = `${product?.name} | ${SITE_NAME}`;
-const seoDescription = `GHS ${product?.price} - ${product?.description}`;
-const seoImage = product?.images?.[0] ? absoluteUrl(product.images[0]) : `${SITE_URL}/og-image.jpg`;
-const canonicalUrl = absoluteUrl(`/products/${product?.id}`);
+const seoTitle = `${product.value?.name} | ${SITE_NAME}`;
+const seoDescription = `GHS ${product.value?.price} - ${product.value?.description}`;
+const seoImage = product.value?.images?.[0] ? absoluteUrl(product.value.images[0]) : `${SITE_URL}/og-image.jpg`;
+const canonicalUrl = absoluteUrl(`/products/${product.value?.id}`);
 
 useHead({
   title: seoTitle,
-  meta: [{ name: "description", content: seoDescription }],
+  meta: [
+    { name: "description", content: seoDescription },
+    keywordsMeta(
+      product.value
+        ? [product.value.name, `buy ${product.value.name.toLowerCase()}`, `${product.value.category} Accra`, `${product.value.name.toLowerCase()} Ghana`]
+        : []
+    ),
+  ],
   link: [{ rel: "canonical", href: canonicalUrl }],
-  script: product
+  script: product.value
     ? [
         {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Product",
-            name: product.name,
-            description: product.description,
-            image: product.images?.map((img) => absoluteUrl(img)) ?? [],
-            sku: product.id,
-            category: product.category,
+            name: product.value.name,
+            description: product.value.description,
+            image: product.value.images?.map((img) => absoluteUrl(img)) ?? [],
+            sku: product.value.id,
+            category: product.value.category,
+            keywords: `${product.value.name}, ${product.value.category}, running gear Accra, jogging gear Ghana`,
             brand: { "@type": "Brand", name: SITE_NAME },
             offers: {
               "@type": "Offer",
               url: canonicalUrl,
               priceCurrency: "GHS",
-              price: product.price,
+              price: product.value.price,
               availability: "https://schema.org/InStock",
               itemCondition: "https://schema.org/NewCondition",
             },

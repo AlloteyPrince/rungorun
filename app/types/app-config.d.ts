@@ -4,8 +4,6 @@ declare module 'nuxt/schema' {
     brand: {
       name: string
       slogan: string
-      whatsappNumber: string
-      whatsappMessage: string
     }
     theme: {
       primaryColor: string

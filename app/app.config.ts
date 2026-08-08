@@ -3,9 +3,6 @@ export default defineAppConfig({
   brand: {
     name: "RUNGORUN",
     slogan: "Premium jogging wear for active living",
-    whatsappNumber: "233270751657",
-    whatsappMessage:
-      "Hello, I am interested in ordering this product from your website.",
   },
   theme: {
     primaryColor: "#DFFF00",

@@ -1,13 +1,22 @@
 <script setup>
 import { useWhatsApp } from "~/composables/useWhatsApp";
-import { products } from "~/data/products";
-import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION } from "~/utils/seo";
+import { useProducts } from "~/composables/useProducts";
+import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION, keywordsMeta } from "~/utils/seo";
 
 const { orderOnWhatsApp } = useWhatsApp();
+const { data: products } = await useProducts();
 const visibleSections = ref(new Set());
 
 useHead({
   link: [{ rel: "canonical", href: SITE_URL }],
+  meta: [
+    keywordsMeta([
+      "Run Go Run",
+      "premium running gear Ghana",
+      "running store Accra",
+      "shop jogging gear online",
+    ]),
+  ],
   script: [
     {
       type: "application/ld+json",
@@ -22,6 +31,13 @@ useHead({
           "@type": "City",
           name: "Accra",
         },
+        knowsAbout: [
+          "Running gear",
+          "Jogging accessories",
+          "Sportswear",
+          "Athletic apparel",
+          "Fitness in Accra",
+        ],
       }),
     },
     {
@@ -36,7 +52,7 @@ useHead({
   ],
 });
 
-const featuredProducts = computed(() => products.slice(-2).reverse());
+const featuredProducts = computed(() => products.value.slice(0, 2));
 const showContact = useState("contact_modal");
 
 onMounted(() => {
@@ -145,7 +161,7 @@ const scrollToSection = (id) => {
         <img
           src="/images/athletes-jogging.jpg"
           class="w-full h-full object-cover scale-110 opacity-60 pointer-events-none"
-          alt="Run Go Run Performance"
+          alt="Runners jogging in Accra wearing Run Go Run performance gear"
           loading="eager"
           fetchpriority="high"
         />
@@ -308,7 +324,7 @@ const scrollToSection = (id) => {
       ></div>
       <img
         src="/images/homecouplerun.jpg"
-        alt="Run Go Run Community"
+        alt="Accra running community wearing Run Go Run jogging gear"
         class="w-full h-full object-cover object-top"
       />
       <div class="absolute inset-0 z-20 flex items-center">

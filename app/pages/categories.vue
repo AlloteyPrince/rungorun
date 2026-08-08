@@ -1,12 +1,14 @@
 <script setup>
-import { products } from '~/data/products'
-import { SITE_URL, absoluteUrl } from '~/utils/seo'
+import { useProducts } from '~/composables/useProducts'
+import { SITE_URL, absoluteUrl, keywordsMeta } from '~/utils/seo'
+
+const { data: products } = await useProducts()
 
 const activeCategory = ref('All')
 const categories = ['All', 'Apparel', 'Accessories', 'Support', 'Metric Tech']
 const filteredProducts = computed(() => {
-  if (activeCategory.value === 'All') return products
-  return products.filter(p => p.category === activeCategory.value)
+  if (activeCategory.value === 'All') return products.value
+  return products.value.filter(p => p.category === activeCategory.value)
 })
 
 useHead({
@@ -14,8 +16,15 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Browse the full Run Go Run inventory — running vests, armbands, apparel, and recovery gear engineered for Accra runners. Order fast via WhatsApp.',
+      content: 'Browse the full Run Go Run inventory — running vests, jogging armbands, apparel, and recovery gear engineered for Accra runners. Order fast via WhatsApp.',
     },
+    keywordsMeta([
+      'running gear shop Accra',
+      'jogging vest for sale',
+      'running armband for sale Ghana',
+      'buy sportswear Accra',
+      ...products.value.map((p) => p.name),
+    ]),
   ],
   link: [{ rel: 'canonical', href: `${SITE_URL}/categories` }],
   script: [
@@ -24,7 +33,7 @@ useHead({
       children: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        itemListElement: products.map((p, i) => ({
+        itemListElement: products.value.map((p, i) => ({
           '@type': 'ListItem',
           position: i + 1,
           url: absoluteUrl(`/products/${p.id}`),

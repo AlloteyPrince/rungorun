@@ -1,5 +1,5 @@
 <script setup>
-import { SITE_NAME, SITE_URL } from '~/utils/seo'
+import { SITE_NAME, SITE_URL, keywordsMeta } from '~/utils/seo'
 
 const seoTitle = 'About Run Go Run | Engineered Running Gear, Accra'
 const seoDescription = "Run Go Run designs running gear built for Accra's streets and heat. No shortcuts, no soft gear — just kit engineered for runners who show up daily."
@@ -7,7 +7,10 @@ const canonicalUrl = `${SITE_URL}/about`
 
 useHead({
   title: seoTitle,
-  meta: [{ name: 'description', content: seoDescription }],
+  meta: [
+    { name: 'description', content: seoDescription },
+    keywordsMeta(['about Run Go Run', 'Accra running brand', 'Ghana running gear company']),
+  ],
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 

@@ -2,7 +2,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { supabase } from "../../lib/supabase";
-import { SITE_URL } from "~/utils/seo";
+import { SITE_URL, keywordsMeta } from "~/utils/seo";
 
 useHead({
   title: "The Circuit | Run Go Run Blog — Running Guides & Gear Science for Accra",
@@ -10,32 +10,50 @@ useHead({
     {
       name: "description",
       content:
-        "Stories, practical guides, gear science, and runner-tested strategies for Accra. The Run Go Run blog covers training, gear, and active living.",
+        "Stories, practical guides, gear science, and runner-tested strategies for Accra. The Run Go Run blog covers jogging tips, training, gear reviews, and active living in Ghana.",
     },
+    keywordsMeta([
+      "running blog Ghana",
+      "jogging tips Accra",
+      "running training guide",
+      "gear reviews running",
+      "how to start jogging",
+      "running in Accra heat",
+    ]),
   ],
   link: [{ rel: "canonical", href: `${SITE_URL}/blog` }],
 });
 
-const posts = ref([]);
-const loading = ref(true);
 const visibleSections = ref(new Set());
 const selectedCategory = ref("all");
 const searchQuery = ref("");
-const categories = ref([]);
 const visibleCount = ref(6);
 const showSearch = ref(false);
 const searchInput = ref(null);
 
 // ── Fetch Categories ──
-const fetchCategories = async () => {
-  const { data } = await supabase.from("tags").select("*").order("name");
-  if (data) categories.value = data;
-};
+// useAsyncData runs on the server too, so tags for the filter bar are
+// present in the first HTML response rather than popping in after mount.
+const { data: categories } = await useAsyncData(
+  "blog-tags",
+  async () => {
+    const { data } = await supabase.from("tags").select("*").order("name");
+    return data || [];
+  },
+  { default: () => [] }
+);
 
 // ── Fetch Posts ──
-const fetchPosts = async () => {
-  loading.value = true;
-  try {
+// useAsyncData (not onMounted) so the post grid — titles, excerpts, and links
+// to each /blog/[slug] page — is already in the server-rendered HTML. Search
+// engines that don't (or can't) run client JS still see and can follow every
+// post link on this page instead of finding an empty grid.
+const {
+  data: posts,
+  pending: loading,
+} = await useAsyncData(
+  "blog-posts",
+  async () => {
     let query = supabase
       .from("posts")
       .select(`
@@ -52,13 +70,10 @@ const fetchPosts = async () => {
 
     const { data, error } = await query;
     if (error) throw error;
-    posts.value = data || [];
-  } catch (err) {
-    console.error("Error fetching posts:", err);
-  } finally {
-    loading.value = false;
-  }
-};
+    return data || [];
+  },
+  { watch: [selectedCategory], default: () => [] }
+);
 
 // ── Filtered Posts ──
 const filteredPosts = computed(() => {
@@ -129,15 +144,9 @@ const truncate = (text, length = 140) => {
   return clean.length > length ? clean.slice(0, length) + "..." : clean;
 };
 
-watch(selectedCategory, () => {
-  resetPagination();
-  fetchPosts();
-});
+watch(selectedCategory, resetPagination);
 
 onMounted(() => {
-  fetchPosts();
-  fetchCategories();
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -288,7 +297,7 @@ onMounted(() => {
           <p class="text-gray-400 font-bold italic text-xl">No posts found.</p>
           <button 
             v-if="searchQuery || selectedCategory !== 'all'"
-            @click="searchQuery = ''; selectedCategory = 'all'; resetPagination(); fetchPosts()" 
+            @click="searchQuery = ''; selectedCategory = 'all'; resetPagination()" 
             class="mt-4 text-rungreen text-sm font-black uppercase tracking-widest hover:underline"
           >
             Clear all filters
